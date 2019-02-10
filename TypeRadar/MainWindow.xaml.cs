@@ -20,9 +20,63 @@ namespace TypeRadar
     /// </summary>
     public partial class MainWindow : Window
     {
+        private TextSampleViewModel viewModel;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            viewModel = new TextSampleViewModel();
+            
+            DataContext = viewModel;
         }
+
+        private void TextBoxTypingTest_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            TextBox textBoxTypingTest = (TextBox)sender;
+            if (textBoxTypingTest.Text == "")
+            {
+                viewModel.TypingTestTimer.Start();
+            }
+        }
+
+        private void TextBoxTypingTest_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var textBox = (TextBox)sender;
+
+            // Find mistakes
+            int firstErrorIndex = textBox.Text.Length;
+            for (int i = 0; i < textBox.Text.Length; i++)
+            {
+                if (textBox.Text[i] != viewModel.SelectedTextSample.Text[i])
+                {
+                    firstErrorIndex = i;
+                    break;
+                }
+            }
+
+            string correctText = textBox.Text.Substring(0, firstErrorIndex);
+            var correctTextRun = new Run(correctText);
+            correctTextRun.Foreground = new SolidColorBrush(Colors.Green);
+
+            string missingText = viewModel.SelectedTextSample.Text.Substring(firstErrorIndex);
+            var missingTextRun = new Run(missingText);
+            missingTextRun.Foreground = new SolidColorBrush(Colors.Red);
+            
+            // Colour mistakes
+            textBlockTextSample.Inlines.Clear();
+            textBlockTextSample.Inlines.Add(correctTextRun);
+            textBlockTextSample.Inlines.Add(missingTextRun);
+
+            // If completed
+            if (textBox.Text == viewModel.SelectedTextSample.Text)
+            {
+                viewModel.TypingTestTimer.Stop();
+                double wpm = viewModel.CalculateWpm(out int wordCount);
+                MessageBox.Show($"Well done! Your WPM was {wpm:0.0} over {wordCount} words.");
+                return;
+            }
+        }
+
     }
 }

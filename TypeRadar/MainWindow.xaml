@@ -5,8 +5,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TypeRadar"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Type Radar" Height="450" Width="700">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <!-- Grid splitter -->
+            <RowDefinition Height="7"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock x:Name="textBlockTextSample" Grid.Row="0" Margin="20" FontSize="18" TextWrapping="Wrap" Text="{Binding SelectedTextSample.Text}"/>
+
+        <Grid Grid.Row="0" Grid.Column="1" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Grid.Column="0" VerticalAlignment="Top">Text sample</TextBlock>
+            <TextBox VerticalAlignment="Top" Grid.Column="1" Margin="10,0,0,0" Text="{Binding SelectedTextSampleIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" >
+                <TextBox.Resources>
+                    <Style TargetType="TextBox">
+                        <Style.Triggers>
+                            <Trigger Property="Validation.HasError" Value="True">
+                                <Setter Property="Background" Value="LightPink"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+        </Grid>
+
+        <GridSplitter Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Height="7" TabIndex="-1"/>
+
+        <TextBox x:Name="textBoxTypingTest" Grid.Row="2" Grid.ColumnSpan="2" Margin="20,20,20,20" FontSize="18" TextWrapping="Wrap" PreviewTextInput="TextBoxTypingTest_PreviewTextInput" TextChanged="TextBoxTypingTest_TextChanged" Text="{Binding TypingTestInput}"/>
     </Grid>
 </Window>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,13 +57,18 @@ namespace TypeRadar
             }
 
             string correctText = textBox.Text.Substring(0, firstErrorIndex);
-            var correctTextRun = new Run(correctText);
-            correctTextRun.Foreground = new SolidColorBrush(Colors.Green);
+            var correctTextRun = new Run(correctText)
+            {
+                Foreground = new SolidColorBrush(Colors.Green),
+                Background = new SolidColorBrush(Color.FromArgb(60, 0, 255, 0))
+            };
 
             string missingText = viewModel.SelectedTextSample.Text.Substring(firstErrorIndex);
-            var missingTextRun = new Run(missingText);
-            missingTextRun.Foreground = new SolidColorBrush(Colors.Red);
-            
+            var missingTextRun = new Run(missingText)
+            {
+                Foreground = new SolidColorBrush(Colors.Red)
+            };
+
             // Colour mistakes
             textBlockTextSample.Inlines.Clear();
             textBlockTextSample.Inlines.Add(correctTextRun);
@@ -78,5 +84,22 @@ namespace TypeRadar
             }
         }
 
+        private void TextSampleUriSource_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            e.Handled = true;
+        }
+
+        private void BtnPrevSample_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.PrevTextSample();
+            e.Handled = true;
+        }
+
+        private void BtnNextSample_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.NextTextSample();
+            e.Handled = true;
+        }
     }
 }

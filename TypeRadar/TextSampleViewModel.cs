@@ -61,12 +61,26 @@ namespace TypeRadar
             SelectedTextSampleIndex = 0;
         }
 
+        public void PrevTextSample()
+        {
+            if (SelectedTextSampleIndex < 1)
+            {
+                SelectedTextSampleIndex = TextSamples.Count - 1;
+            }
+            else
+            {
+                SelectedTextSampleIndex--;
+            }
+        }
+
         public void NextTextSample()
         {
-            SelectedTextSampleIndex++;
-            if (SelectedTextSampleIndex >= TextSamples.Count)
+            if (SelectedTextSampleIndex + 1 >= TextSamples.Count)
             {
                 SelectedTextSampleIndex = 0;
+            } else
+            {
+                SelectedTextSampleIndex++;
             }
         }
         #endregion

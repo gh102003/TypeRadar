@@ -5,7 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TypeRadar"
         mc:Ignorable="d"
-        Title="Type Radar" Height="450" Width="700">
+        Title="Type Radar" Height="450" Width="680">
+    <Window.Resources>
+        <Style x:Key="PrimaryInputAndOutputStyle">
+            <Setter Property="Control.FontSize" Value="16"/>
+            <Setter Property="TextBlock.FontSize" Value="16"/>
+
+            <Setter Property="TextBox.TextWrapping" Value="Wrap"/>
+            <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
+
+            <Setter Property="TextBlock.TextAlignment" Value="Justify"/>
+
+            <Setter Property="FrameworkElement.Margin" Value="20"/>
+        </Style>
+        <Style x:Key="TextSampleName" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="LineHeight" Value="22"/>
+            <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,15,0,0"/>
+        </Style>
+        <Style x:Key="TextSampleAuthor" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="LineHeight" Value="16"/>
+            <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -14,34 +42,56 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2.5*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock x:Name="textBlockTextSample" Grid.Row="0" Margin="20" FontSize="18" TextWrapping="Wrap" Text="{Binding SelectedTextSample.Text}"/>
+        <Grid x:Name="sampleSelector" Grid.Row="0" Grid.Column="0" Margin="20, 20, 0, 20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Grid.Column="1" Margin="20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            
-            <TextBlock Grid.Column="0" VerticalAlignment="Top">Text sample</TextBlock>
-            <TextBox VerticalAlignment="Top" Grid.Column="1" Margin="10,0,0,0" Text="{Binding SelectedTextSampleIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" >
-                <TextBox.Resources>
-                    <Style TargetType="TextBox">
-                        <Style.Triggers>
-                            <Trigger Property="Validation.HasError" Value="True">
-                                <Setter Property="Background" Value="LightPink"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBox.Resources>
-            </TextBox>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock FontSize="14" VerticalAlignment="Center">Text sample</TextBlock>
+                <Button x:Name="btnPrevSample" FontFamily="Marlett" FontSize="14" Content="3" Grid.Column="1" Width="20" Click="BtnPrevSample_Click"/>
+                <TextBox Width="40" Grid.Column="2" FontSize="14" TextAlignment="Center" Text="{Binding SelectedTextSampleIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" >
+                    <TextBox.Resources>
+                        <Style TargetType="TextBox">
+                            <Style.Triggers>
+                                <Trigger Property="Validation.HasError" Value="True">
+                                    <Setter Property="Background" Value="LightPink"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
+                <Button x:Name="btnNextSample" FontFamily="Marlett" FontSize="14" Content="4" Grid.Column="3" Width="20" HorizontalAlignment="Right" Click="BtnNextSample_Click"/>
+            </Grid>
+
+            <TextBlock Style="{StaticResource TextSampleName}" Grid.Row="1" Text="{Binding SelectedTextSample.Name}"/>
+            <TextBlock Style="{StaticResource TextSampleAuthor}" Grid.Row="2" Text="{Binding SelectedTextSample.Author}"/>
+
+            <TextBlock Grid.Row="3">
+                <Hyperlink NavigateUri="{Binding SelectedTextSample.Uri}" RequestNavigate="TextSampleUriSource_RequestNavigate">
+                    Source
+                </Hyperlink>
+            </TextBlock>
         </Grid>
+
+        <TextBlock x:Name="textBlockTextSample" Style="{StaticResource PrimaryInputAndOutputStyle}" Grid.Row="0" Grid.Column="1" Text="{Binding SelectedTextSample.Text}"/>
 
         <GridSplitter Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Height="7" TabIndex="-1"/>
 
-        <TextBox x:Name="textBoxTypingTest" Grid.Row="2" Grid.ColumnSpan="2" Margin="20,20,20,20" FontSize="18" TextWrapping="Wrap" PreviewTextInput="TextBoxTypingTest_PreviewTextInput" TextChanged="TextBoxTypingTest_TextChanged" Text="{Binding TypingTestInput}"/>
+        <TextBox x:Name="textBoxTypingTest" Style="{StaticResource PrimaryInputAndOutputStyle}" Grid.Row="2" Grid.ColumnSpan="2" PreviewTextInput="TextBoxTypingTest_PreviewTextInput" TextChanged="TextBoxTypingTest_TextChanged" Text="{Binding TypingTestInput}"/>
     </Grid>
 </Window>

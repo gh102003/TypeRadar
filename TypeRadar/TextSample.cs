@@ -36,7 +36,23 @@ namespace TypeRadar
                 }
 
                 name = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SourceName")); // Check something is listening
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name")); // Check something is listening
+            }
+        }
+
+        private string author;
+        public string Author
+        {
+            get => author;
+            set
+            {
+                if (value == author)
+                {
+                    return;
+                }
+
+                author = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Author")); // Check something is listening
             }
         }
 
@@ -52,15 +68,16 @@ namespace TypeRadar
                 }
 
                 uri = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SourceUri")); // Check something is listening
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Uri")); // Check something is listening
             }
         }
 
-        public TextSample(string text, string name, Uri uri)
+        public TextSample(string text, string name, string author, Uri uri)
         {
             Text = text;
             Name = name;
             Uri = uri;
+            Author = author;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

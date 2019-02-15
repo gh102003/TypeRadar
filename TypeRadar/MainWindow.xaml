@@ -10,31 +10,43 @@
         <Style x:Key="PrimaryInputAndOutputStyle">
             <Setter Property="Control.FontSize" Value="16"/>
             <Setter Property="TextBlock.FontSize" Value="16"/>
-
             <Setter Property="TextBox.TextWrapping" Value="Wrap"/>
             <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
-
             <Setter Property="TextBlock.TextAlignment" Value="Justify"/>
-
             <Setter Property="FrameworkElement.Margin" Value="20"/>
         </Style>
         <Style x:Key="TextSampleName" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Century Gothic"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="LineHeight" Value="22"/>
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="LineHeight" Value="24"/>
             <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="Margin" Value="0,15,0,0"/>
         </Style>
         <Style x:Key="TextSampleAuthor" TargetType="TextBlock">
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="LineHeight" Value="16"/>
+            <Setter Property="FontFamily" Value="Century Gothic"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="LineHeight" Value="18"/>
             <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
+        <Style x:Key="TextBoxBindingInput" TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="Background" Value="LightPink"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="TextBoxSelectedSampleIndex" TargetType="TextBox" BasedOn="{StaticResource TextBoxBindingInput}">
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="0, 1, 0, 1"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
     </Window.Resources>
-    <Grid>
+    <Grid Background="#">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <!-- Grid splitter -->
@@ -43,7 +55,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="2.5*"/>
+            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
         <Grid x:Name="sampleSelector" Grid.Row="0" Grid.Column="0" Margin="20, 20, 0, 20">
@@ -61,21 +73,16 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock FontSize="14" VerticalAlignment="Center">Text sample</TextBlock>
                 <Button x:Name="btnPrevSample" FontFamily="Marlett" FontSize="14" Content="3" Grid.Column="1" Width="20" Click="BtnPrevSample_Click"/>
-                <TextBox Width="40" Grid.Column="2" FontSize="14" TextAlignment="Center" Text="{Binding SelectedTextSampleIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" >
-                    <TextBox.Resources>
-                        <Style TargetType="TextBox">
-                            <Style.Triggers>
-                                <Trigger Property="Validation.HasError" Value="True">
-                                    <Setter Property="Background" Value="LightPink"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBox.Resources>
-                </TextBox>
-                <Button x:Name="btnNextSample" FontFamily="Marlett" FontSize="14" Content="4" Grid.Column="3" Width="20" HorizontalAlignment="Right" Click="BtnNextSample_Click"/>
+                <TextBox Style="{StaticResource TextBoxSelectedSampleIndex}" Grid.Column="2" Text="{Binding SelectedTextSampleIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                <Button x:Name="btnNextSample" FontFamily="Marlett" FontSize="14" Content="4" Grid.Column="3" Width="20" Click="BtnNextSample_Click"/>
+                <Button x:Name="btnRandomSample"  Margin="8, 0, 0, 0" Grid.Column="4" Click="BtnRandomSample_Click" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+                    <Image Source="resources/random.png"/>
+                </Button>
+
             </Grid>
 
             <TextBlock Style="{StaticResource TextSampleName}" Grid.Row="1" Text="{Binding SelectedTextSample.Name}"/>

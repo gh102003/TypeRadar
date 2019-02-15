@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace TypeRadar
 {
@@ -49,7 +51,7 @@ namespace TypeRadar
         private void LoadTextSamples()
         {
             string json;
-            var uri = new Uri("/textSamples.json", UriKind.Relative);
+            var uri = new Uri("/resources/textSamples.json", UriKind.Relative);
             using (Stream stream = Application.GetResourceStream(uri).Stream)
             {
                 StreamReader streamReader = new StreamReader(stream);
@@ -82,6 +84,13 @@ namespace TypeRadar
             {
                 SelectedTextSampleIndex++;
             }
+        }
+
+        public void RandomTextSample()
+        {
+            var random = new Random();
+
+            SelectedTextSampleIndex = random.Next(TextSamples.Count);
         }
         #endregion
 

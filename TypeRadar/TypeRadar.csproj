@@ -93,7 +93,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
-    <Resource Include="textSamples.json" />
+    <Resource Include="resources\textSamples.json" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -104,6 +104,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\DataSources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\random.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

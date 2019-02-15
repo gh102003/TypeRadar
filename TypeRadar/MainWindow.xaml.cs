@@ -82,6 +82,13 @@ namespace TypeRadar
                 MessageBox.Show($"Well done! Your WPM was {wpm:0.0} over {wordCount} words.");
                 return;
             }
+
+            // If empty, restore normal binding to SelectedTextSample.Text
+            if (String.IsNullOrEmpty(textBox.Text))
+            {
+                viewModel.TypingTestTimer.Stop();
+                textBlockTextSample.SetBinding(TextBlock.TextProperty, new Binding("SelectedTextSample.Text"));
+            }
         }
 
         private void TextSampleUriSource_RequestNavigate(object sender, RequestNavigateEventArgs e)
@@ -99,6 +106,12 @@ namespace TypeRadar
         private void BtnNextSample_Click(object sender, RoutedEventArgs e)
         {
             viewModel.NextTextSample();
+            e.Handled = true;
+        }
+
+        private void BtnRandomSample_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.RandomTextSample();
             e.Handled = true;
         }
     }
